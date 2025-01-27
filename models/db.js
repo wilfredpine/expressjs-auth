@@ -17,27 +17,27 @@ const { Sequelize } = require('sequelize');
  * Passing parameters separately (other dialects)
  */
 
-    const sequelize = new Sequelize({
-        dialect:    'sqlite',
-        storage:    path.join(__dirname, 'database.sqlite'),    // Path to SQLite file
-        logging:    false                                       // Disable query logging (optional)
-    });
+    let sequelize; // Change const to let
 
-    if(process.env.DB_DIALECT !== 'sqlite'){
-
+    if (process.env.DB_DIALECT === 'sqlite') {
+        sequelize = new Sequelize({
+            dialect: 'sqlite',
+            storage: path.join(__dirname, 'database.sqlite'), // Path to SQLite file
+            logging: false                      // Disable query logging (optional)
+        });
+    } else {
         sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-            host:       process.env.DB_HOST,
-            dialect:    process.env.DB_DIALECT,
-            port:       process.env.DB_PORT,                    // Default PostgreSQL port
-            logging:    false,                                  // Disable query logging (optional)
+            host: process.env.DB_HOST,
+            dialect: process.env.DB_DIALECT,
+            port: process.env.DB_PORT,          // Default PostgreSQL port
+            logging: false,                     // Disable query logging (optional)
             pool: {
-                max:        5,                                  // Max connections
-                min:        0,
-                acquire:    30000,                              // Max time to get a connection
-                idle:       10000                               // Max time a connection can be idle
+                max: 5,                         // Max connections
+                min: 0,
+                acquire: 30000,                 // Max time to get a connection
+                idle: 10000                     // Max time a connection can be idle
             }
         });
-
     }
 
     (async () => {
@@ -46,12 +46,9 @@ const { Sequelize } = require('sequelize');
 
             logger.info('Connection has been established successfully.');
             console.log('Connection has been established successfully.');
-
         } catch (error) {
-
             logger.error('Unable to connect to the database');
             console.error('Unable to connect to the database:', error);
-
         }
     })();
     

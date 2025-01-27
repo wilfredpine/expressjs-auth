@@ -7,7 +7,7 @@
  * @8/2024
  */
 
-require('dotenv').config();
+require('@dotenvx/dotenvx').config()
 
 const db = require('../models/db');
 const jwt = require('jsonwebtoken');
